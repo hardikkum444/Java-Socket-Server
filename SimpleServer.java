@@ -19,13 +19,13 @@ import java.net.Socket;
 public class SimpleServer {
     public static void main(String[] args) throws IOException{
 
-    	ServerSocket server = new ServerSocket(9000);
+    	ServerSocket server = new ServerSocket(9000);  //listening on port 9000
 
     	while(true){
     		final Socket client = server.accept();
 
-    		BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-    		PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
+    		BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream())); 
+    		PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream())); 
 
     		while(true){
 
@@ -35,6 +35,7 @@ public class SimpleServer {
     				break;
     			}
 
+                //extracting user_name and displaying it
     			if(line.contains("GET")){
 
     				int startIndex = line.indexOf("/");
