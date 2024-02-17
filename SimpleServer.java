@@ -7,6 +7,7 @@
 // import java.io.OutputStreamReader;
 // import java.io.PrintWriter;
 
+// import com.hardik.Details;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,52 +16,88 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
 public class SimpleServer {
     public static void main(String[] args) {
+        try {
+            ServerSocket server = new ServerSocket(9000);
 
-    	try{
-    		ServerSocket server = new ServerSocket(9000);
+            while (true) {
+                final Socket client = server.accept(); 
 
-    	while(true){
-    		final Socket client = server.accept();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
+                String person = "";
 
-    		BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-    		PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
+                while (true) {
+                    String line = reader.readLine();
+                    System.out.println("Header : " + line);
+                    if (line.equals("")) {
+                        break;
+                    }
 
-    		while(true){
+                    if (line.contains("GET")) {
+                        int startIndex = line.indexOf("/");
+                        int endIndex = line.indexOf(" HTTP");
+                        person = line.substring(startIndex + 1, endIndex);
+                        System.out.println("User's name is: " + person);
+                        
+                        
+                        Details userDetails = getDetails(person);
+                        
+                    }
+                }
 
-    			String line = reader.readLine();
-    			System.out.println("Header : "+line);
-    			if(line.equals("")){
-    				break;
-    			}
+                String crlf = "\r\n";
+                Details detail = getDetails(person);
+                writer.print("HTTP/1.1 200 OK"+crlf);
+                writer.print("Content-Type: application/json"+crlf);
+                writer.println("Content-Length: "+detail.toString().length()+crlf);
 
-    			if(line.contains("GET")){
+                writer.print(detail.name);
 
-    				int startIndex = line.indexOf("/");
-    				int endIndex = line.indexOf(" HTTP");
-    				String person = line.substring(startIndex+1, endIndex);
-    				System.out.println("User's name is: "+person);
-    			}
-    		}
-    	
+                writer.flush();
+                writer.close();
+                reader.close();
+                client.close();
 
 
 
 
-    	}
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println();
+            System.out.println("An error has occurred");
+            System.out.println("Port is probably already in use!");
+        }
     }
-    
-    //catching errors using IOException
-    catch (IOException a){
-    	a.printStackTrace();
-    	System.out.println();
-    	System.out.println("An error has occured");
-    	System.out.println("Port is probably already in use!");
-        
+
+
+    public static Details getDetails(String name){
+        Details hardik = new Details();
+        if(name.equals("Hardik")){
+
+            hardik.name = "Hardik";
+            hardik.age = 20;
+            hardik.phoneNumber = 8208;
+            hardik.email = "hardikkumawat444@gmail.com";
+            System.out.println(hardik.email);
+        }
+
+        return hardik;
     }
-    }
+
+
+
+}
+
+class Details{
+    String name;
+    int age;
+    int phoneNumber;
+    String email;
 }
 
 
