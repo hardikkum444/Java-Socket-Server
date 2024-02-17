@@ -20,6 +20,7 @@ public class SimpleServer {
     public static void main(String[] args) {
         try {
             ServerSocket server = new ServerSocket(9000);
+            System.err.println("Server is running on port 9000");
 
             while (true) {
                 final Socket client = server.accept(); 
@@ -41,11 +42,25 @@ public class SimpleServer {
                         person = line.substring(startIndex + 1, endIndex);
                         System.out.println("User's name is: " + person);
                         
-                        
+                        // Retrieve user details
                         Details userDetails = getDetails(person);
-                        
+                        // You can use userDetails object to send appropriate response
+
+
+                // writer.println("please enter your name");
+                // writer.flush(); // Ensure message is sent immediately
+
+                // String info = reader.readLine();
+                // System.out.println("Received from client: " + info);
+
+
                     }
                 }
+
+
+
+
+
 
                 String crlf = "\r\n";
                 Details detail = getDetails(person);
@@ -83,7 +98,7 @@ public class SimpleServer {
             hardik.age = 20;
             hardik.phoneNumber = 8208;
             hardik.email = "hardikkumawat444@gmail.com";
-            System.out.println(hardik.email);
+            // System.out.println(hardik.email);
         }
 
         return hardik;
