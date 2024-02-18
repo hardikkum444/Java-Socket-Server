@@ -46,7 +46,7 @@
         function sendRequest() {
             var request = document.getElementById("editor").value;
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:9000", true);
+            xhr.open("POST", "https://7211-112-196-62-5.ngrok-free.app", true);
             xhr.setRequestHeader("Content-Type", "text/plain");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
