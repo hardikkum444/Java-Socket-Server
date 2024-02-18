@@ -5,6 +5,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.*;
+import java.lang.*;
 
 public class serverPrac {
 
@@ -22,6 +24,7 @@ public class serverPrac {
                 PrintWriter writer = new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
                 
                 String person = "";
+                String output = "";
                 boolean isFin = false;
 
                 StringBuilder requestBuilder = new StringBuilder();
@@ -33,6 +36,12 @@ public class serverPrac {
                     }
                     requestBuilder.append(line).append("\n");
                 }
+
+
+                //-------------------------------------------------------------------------------------------------------
+                //checking and implementing the payload
+
+
 
                 if (isFin) {
                     // Check if the request has a payload
@@ -58,8 +67,65 @@ public class serverPrac {
                     }
 
                     String payload = payloadBuilder.toString().trim();
-                    System.out.println("Payload from client: " + payload);
+                    System.out.println("Payload from client: \n" + payload);
+
+                    File code = new File("Main.java");
+                    try(PrintWriter codeWriter = new PrintWriter(code)){
+                        codeWriter.println(payload);
+                    }
+
+                    String command = "javac -d . Main.java";
+                    Process compile = Runtime.getRuntime().exec(command);
+
+
+
+
+                    BufferedReader errorReader = new BufferedReader(new InputStreamReader(compile.getErrorStream()));
+                    StringBuilder compileError = new StringBuilder();
+                    String error = "";
+
+                    while((error = errorReader.readLine()) != null){
+
+                        compileError.append(error).append("\n");
+
+                    }
+
+                    String finalError = compileError.toString();
+                    if(!finalError.isEmpty()){
+
+                        output = finalError;
+                    }else{
+
+
+                    // try {
+                    //     compile.waitFor();
+                    // } catch (InterruptedException e) {
+                    //     e.printStackTrace();
+                    // }
+
+                    String command_2 = "java Main";
+                    Process execute = Runtime.getRuntime().exec(command_2);
+
+                    BufferedReader execReader = new BufferedReader(new InputStreamReader(execute.getInputStream()));
+                    StringBuilder outputBuilder = new StringBuilder();
+                    String execLine = "";
+                    while((execLine = execReader.readLine()) != null){
+                        
+                        outputBuilder.append(execLine).append("\n");
+                    }
+
+                    output = outputBuilder.toString();
+
+                    // String command_3 = "rm main.class";
+                    // Process delete = Runtime.getRuntime().exec(command_3);
+
+                    }
+
+
                 }
+
+                //-------------------------------------------------------------------------------------------------------
+
 
                 String request = requestBuilder.toString();
                 System.out.println("Received request:\n" + request);
@@ -71,8 +137,8 @@ public class serverPrac {
                 writer.print("\r\n");
 
                 // Send a simple response
-                writer.print("Hello, client! Your request was received.\r\n");
-                writer.print("Users name is " + person);
+                // writer.print("Hello, client! Your request was received.\r\n");
+                writer.print(output);
                 
                 writer.flush();
 
