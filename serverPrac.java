@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.io.*;
 import java.lang.*;
 
-public class serverPrac {
+public class changes {
 
     public static void main(String[] args) {
 
@@ -25,6 +25,8 @@ public class serverPrac {
                 
                 String person = "";
                 String output = "";
+                String fileName = "";
+                String input = "";
                 boolean isFin = false;
 
                 StringBuilder requestBuilder = new StringBuilder();
@@ -59,22 +61,54 @@ public class serverPrac {
                     int bytesRead = 0;
                     while (bytesRead < contentLength) {
                         int c = reader.read();
+                        
                         if (c == -1) {
                             break; // End of stream reached unexpectedly
                         }
-                        payloadBuilder.append((char) c);
+
+                        char character = (char) c;
+                        payloadBuilder.append(character);
+
+                        String payload1 = payloadBuilder.toString();
+
+                        if(payload1.contains("public class")&& payload1.contains(" {")){
+                            // int index1 = payload1.indexOf("public class");
+                            int index1 = payload1.indexOf("public class") + "public class".length();
+                            int index2 = payload1.indexOf(" {",index1);
+                            fileName = payload1.substring(index1,index2).trim();
+                            
+                            // if (fileName.endsWith("}")){
+                            //     fileName = fileName.substring(0,fileName.length()-2);
+                            // }
+
+
+                            // fileName = payload1.substring(index1+1,index2);
+                            // fileName = payload1.substring(index1 + "public class".length(), index2).trim();
+
+                        }
+
+                        if(payload1.contains("//*")){
+
+                            int index3 = payload1.indexOf("//*") + "//*".length();
+                            input = payload1.substring(index3).trim();
+
+                        }
+
                         bytesRead++;
                     }
 
                     String payload = payloadBuilder.toString().trim();
                     System.out.println("Payload from client: \n" + payload);
 
-                    File code = new File("Main.java");
+                    // int index1 = payload.indexOf("public class ");
+                    // int index2 = payload
+
+                    File code = new File(fileName+".java");
                     try(PrintWriter codeWriter = new PrintWriter(code)){
                         codeWriter.println(payload);
                     }
 
-                    String command = "javac -d . Main.java";
+                    String command = "javac -d . "+fileName+".java";
                     Process compile = Runtime.getRuntime().exec(command);
 
 
@@ -103,8 +137,28 @@ public class serverPrac {
                     //     e.printStackTrace();
                     // }
 
-                    String command_2 = "java Main";
+                    // String command_3 = "";
+                    String command_2 = "java " + fileName; // Default command without input
+                    // if (!input.isEmpty()) {
+                    //     command_2 += "\n" + input; 
+                    // }
+
                     Process execute = Runtime.getRuntime().exec(command_2);
+
+
+                    if (!input.isEmpty()) {
+                        OutputStream outputStream = execute.getOutputStream();
+                        PrintWriter writer1 = new PrintWriter(new OutputStreamWriter(outputStream));
+                        writer1.println(input); // Write input to the processd
+                        writer1.flush();
+                    }
+
+                    // if (!input.isEmpty()) {
+                    //     BufferedWriter writer1 = new BufferedWriter(new OutputStreamWriter(execute.getOutputStream()));
+                    //     writer1.write(input); // Write input to the process
+                    //     writer1.newLine(); // Add a new line if needed
+                    //     writer1.flush();
+                    // }
 
                     BufferedReader execReader = new BufferedReader(new InputStreamReader(execute.getInputStream()));
                     StringBuilder outputBuilder = new StringBuilder();
@@ -139,6 +193,9 @@ public class serverPrac {
                 // Send a simple response
                 // writer.print("Hello, client! Your request was received.\r\n");
                 writer.print(output);
+                // writer.print(input);
+
+
                 
                 writer.flush();
 
@@ -180,13 +237,13 @@ public class serverPrac {
 //                 String line;
 //                 while ((line = reader.readLine()) != null) {
 //                     if (line.isEmpty()) {
-//                     	isFin = true;
+//                      isFin = true;
 //                         break;
 //                     }
 //                     // if(line.contains("GET")){
-//                     // 	int startIndex = line.indexOf("/");
-//                     // 	int endIndex = line.indexOf(" HTTP");
-//                     // 	person = line.substring(startIndex+1,endIndex);
+//                     //   int startIndex = line.indexOf("/");
+//                     //   int endIndex = line.indexOf(" HTTP");
+//                     //   person = line.substring(startIndex+1,endIndex);
 
 //                     // }
 //                     requestBuilder.append(line).append("\n");
@@ -194,15 +251,15 @@ public class serverPrac {
 
 //                 if(isFin){
 
-//                 	StringBuilder payloadBuilder = new StringBuilder();
+//                  StringBuilder payloadBuilder = new StringBuilder();
 
-//                 	while ((line = reader.readLine()) != null){
+//                  while ((line = reader.readLine()) != null){
 
-//                 		payloadBuilder.append(line).append("\n");
-//                 	}
+//                      payloadBuilder.append(line).append("\n");
+//                  }
 
-//                 	String payload = payloadBuilder.toString().trim();
-//                 	System.out.println("Payload from client: "+payload);
+//                  String payload = payloadBuilder.toString().trim();
+//                  System.out.println("Payload from client: "+payload);
 //                 }
 
 //                 String request = requestBuilder.toString();
