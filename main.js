@@ -1,13 +1,22 @@
-// main.js
+//used ACE editor
+let inputEditor = ace.edit("inputEditor");
+inputEditor.setTheme("ace/theme/cobalt");
+inputEditor.getSession().setMode("ace/mode/java");
 
-// Wait for the DOM content to be fully loaded
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the DOM element for the editor
-    let editor = document.querySelector("#editor");
+let outputEditor = ace.edit("outputEditor");
+outputEditor.setTheme("ace/theme/cobalt");
+outputEditor.setReadOnly(true);
 
-    // Initialize the Ace Editor
-    let aceEditor = ace.edit(editor);
 
-    // Set the theme
-    aceEditor.setTheme("ace/theme/cobalt");
-});
+function sendRequest() {
+    var request = inputEditor.getValue();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:9000", true);
+    xhr.setRequestHeader("Content-Type", "text/plain");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            outputEditor.setValue(xhr.responseText);
+        }
+    };
+    xhr.send(request);
+}
