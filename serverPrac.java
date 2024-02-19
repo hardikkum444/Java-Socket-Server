@@ -87,11 +87,26 @@ public class changes {
 
                         }
 
-                        if(payload1.contains("//*")){
+                        // if(payload1.contains("//*")){
 
+                        //     int index3 = payload1.indexOf("//*") + "//*".length();
+                        //     if(payload1.substring(index3).trim().contains("//*")){
+                                
+                        //         payload1 = payload1.replace("//*", "");
+
+                        //     }
+                        //     input = payload1.substring(index3).trim();
+
+                        // }
+
+
+                        if (payload1.contains("//*")) {
                             int index3 = payload1.indexOf("//*") + "//*".length();
-                            input = payload1.substring(index3).trim();
-
+                            String trimmedSubstring = payload1.substring(index3).trim();
+                            if (trimmedSubstring.contains("//*")) {
+                                trimmedSubstring = trimmedSubstring.replace("//*", "");
+                            }
+                            input = trimmedSubstring;
                         }
 
                         bytesRead++;
