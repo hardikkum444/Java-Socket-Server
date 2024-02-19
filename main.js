@@ -15,7 +15,14 @@ function sendRequest() {
     xhr.setRequestHeader("Content-Type", "text/plain");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            outputEditor.setValue(xhr.responseText);
+            if (xhr.status === 200) {
+                outputEditor.setValue(xhr.responseText);
+            } else {
+               //if my server is offline -->
+                outputEditor.setValue('Error: ' + xhr.status + ' ' + xhr.statusText+' Cannot connect to server');
+                // outputEditor.setValue('Cannot connect to server');
+
+            }
         }
     };
     xhr.send(request);
