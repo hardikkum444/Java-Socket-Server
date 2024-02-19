@@ -1,89 +1,22 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COMPILER-MAN</title>
-<style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #1e1e1e;
-        color: #fff;
-    }
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 20px;
-    }
-    .title {
-        font-size: 36px;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-    .editor-container {
-        display: flex;
-        justify-content: space-between;
-        width: 80%;
-        margin: 0 auto;
-    }
-    #editor, #output {
-        width: 45%;
-        height: 200px;
-        padding: 10px;
-        border: 1px solid #444;
-        background-color: #2d2d2d;
-        color: #fff;
-        resize: vertical;
-    }
-    #output {
-        resize: none;
-    }
-    #runButton {
-        margin-top: 20px;
-        padding: 12px 24px;
-        background-color: #4CAF50;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: background-color 0.3s ease;
-    }
-    #runButton:hover {
-        background-color: #45a049;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compiler-Man</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="title">COMPILER-MAN</div>
+        <div class="title">Compiler-Man</div>
         <div class="editor-container">
-            <textarea id="editor" placeholder="Write some code SON..."></textarea>
-            <textarea id="output" placeholder="Response will appear here..." readonly></textarea>
+            <div class="editor" id="inputEditor">// Give input in the form of (//*input) at the end</div>
+            <div class="editor" id="outputEditor" readonly></div>
         </div>
         <button id="runButton" onclick="sendRequest()">Run</button>
     </div>
-
-    <script>
-        function sendRequest() {
-            var request = document.getElementById("editor").value;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:9000", true);
-            xhr.setRequestHeader("Content-Type", "text/plain");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    document.getElementById("output").value = xhr.responseText;
-                }
-            };
-            xhr.send(request);
-        }
-    </script>
-<!--     <script src ="main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/ace.js"></script> -->
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/ace.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
