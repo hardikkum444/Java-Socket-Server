@@ -54,3 +54,10 @@ body {
 #runButton:hover {
     background-color: #a0eca0;
 }
+
+.credit {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #eee8e8;
+    animation: slideInFromTop 1s forwards;
+}
