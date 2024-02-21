@@ -1,6 +1,6 @@
 //used ACE editor
 let inputEditor = ace.edit("inputEditor");
-inputEditor.setTheme("ace/theme/cobalt");
+inputEditor.setTheme("ace/theme/gruvbox_dark_hard");
 inputEditor.getSession().setMode("ace/mode/java");
 
 let outputEditor = ace.edit("outputEditor");
@@ -18,7 +18,7 @@ function sendRequest() {
             if (xhr.status === 200) {
                 outputEditor.setValue(xhr.responseText);
             } else {
-               //if my server is offline -->
+                // Handle error here
                 outputEditor.setValue('Error: ' + xhr.status + ' ' + xhr.statusText+' Cannot connect to server');
                 // outputEditor.setValue('Cannot connect to server');
 
