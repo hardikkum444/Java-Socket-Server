@@ -71,7 +71,7 @@ public class changes {
 
                         String payload1 = payloadBuilder.toString();
 
-                        if(payload1.contains("public class")&& payload1.contains(" {")){
+                        if(payload1.contains("public class")&& (payload1.contains(" {"))){
                             // int index1 = payload1.indexOf("public class");
                             int index1 = payload1.indexOf("public class") + "public class".length();
                             int index2 = payload1.indexOf(" {",index1);
@@ -113,12 +113,12 @@ public class changes {
                     }
 
                     String payload = payloadBuilder.toString().trim();
-                    System.out.println("Payload from client: \n" + payload);
+                    //System.out.println("Payload from client: \n" + payload);
 
                     // int index1 = payload.indexOf("public class ");
                     // int index2 = payload
 
-                    File code = new File(fileName+".java");
+                    File code = new File(fileName+".java"); //creating a new stream
                     try(PrintWriter codeWriter = new PrintWriter(code)){
                         codeWriter.println(payload);
                     }
@@ -189,6 +189,11 @@ public class changes {
                     // Process delete = Runtime.getRuntime().exec(command_3);
 
                     }
+
+                    
+                    code.delete();
+                    // code.delete(fileName+".class");
+
 
 
                 }
