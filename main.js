@@ -11,7 +11,7 @@ outputEditor.setReadOnly(true);
 function sendRequest() {
     var request = inputEditor.getValue();
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:9000", true);
+    xhr.open("POST", "https://7929-2409-40d1-c-b28f-3a8f-18f4-ae8a-ac8.ngrok-free.app", true);
     xhr.setRequestHeader("Content-Type", "text/plain");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
