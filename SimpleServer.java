@@ -115,6 +115,8 @@ class Details{
     String email;
 }
 
+//still cant figure out why the browser aint taking auth?
+
 
 
 
